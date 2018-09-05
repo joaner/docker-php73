@@ -19,7 +19,7 @@ RUN yum install -y gcc \
 	gcc-c++ \
 	libzip-devel \
 	make
-RUN ./configure \
+RUN ./configure --perfix=/usr/local \
 	--enable-fpm \
 	--with-openssl \
 	--with-zlib \
