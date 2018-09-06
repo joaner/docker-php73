@@ -18,8 +18,8 @@ RUN yum install -y gcc \
 	libicu-devel \
 	gcc-c++ \
 	libzip-devel \
-	make
-RUN ./configure --perfix=/usr/local \
+	make \
+	&& ./configure --prefix=/usr/local \
 	--enable-fpm \
 	--with-openssl \
 	--with-zlib \
@@ -34,13 +34,12 @@ RUN ./configure --perfix=/usr/local \
 	--enable-mbstring \
 	--enable-pcntl \
 	--with-pdo-mysql \
-	--enable-sockets
-
-RUN make && make install
-RUN cp php.ini-production /usr/local/lib/php.ini
-
-WORKDIR /usr/local
-RUN cp etc/php-fpm.conf.default etc/php-fpm.conf
-RUN cp etc/php-fpm.d/www.conf.default etc/php-fpm.d/www.conf
+	--enable-sockets \
+	&& make \
+	&& make install \
+	&& make clean \
+	&& cp php.ini-production /usr/local/lib/php.ini \
+	&& cp /usr/local/etc/php-fpm.conf.default /usr/local/etc/php-fpm.conf \
+	&& cp /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
 
 CMD [ "/usr/local/sbin/php-fpm", "-F", "-y", "/usr/local/etc/php-fpm.conf", "-c", "/usr/local/lib/php.ini" ]
