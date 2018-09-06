@@ -39,8 +39,8 @@ RUN yum install -y gcc \
 	&& make clean
 
 WORKDIR /usr/local
-ADD conf/php.ini lib/php.ini
-ADD conf/php-fpm.conf etc/php-fpm.conf
-ADD conf/php-fpm.d/www.conf etc/php-fpm.d/www.conf
+COPY conf/php.ini lib/php.ini
+COPY conf/php-fpm.conf etc/php-fpm.conf
+COPY conf/php-fpm.d/www.conf etc/php-fpm.d/www.conf
 
 CMD [ "/usr/local/sbin/php-fpm", "-F", "-y", "/usr/local/etc/php-fpm.conf", "-c", "/usr/local/lib/php.ini" ]
