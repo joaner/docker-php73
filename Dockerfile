@@ -2,9 +2,11 @@ FROM centos:7
 
 EXPOSE 9000
 
-ADD php-7.3.0beta3.tar.gz /srv
+ARG PHP_VERSION="7.3.0beta3"
 
-WORKDIR /srv/php-7.3.0beta3
+ADD "php-$PHP_VERSION.tar.gz" /srv
+
+WORKDIR "/srv/php-$PHP_VERSION"
 RUN yum install -y gcc \
 		libxml2-devel \
 		openssl-devel \
