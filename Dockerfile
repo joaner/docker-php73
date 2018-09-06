@@ -4,9 +4,6 @@ EXPOSE 9000
 
 ADD php-7.3.0beta3.tar.gz /srv
 
-WORKDIR /srv
-RUN mkdir www log
-
 WORKDIR /srv/php-7.3.0beta3
 RUN yum install -y gcc \
 	libxml2-devel \
@@ -37,9 +34,10 @@ RUN yum install -y gcc \
 	--enable-sockets \
 	&& make \
 	&& make install \
-	&& make clean \
-	&& cp php.ini-production /usr/local/lib/php.ini \
-	&& cp /usr/local/etc/php-fpm.conf.default /usr/local/etc/php-fpm.conf \
-	&& cp /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+	&& make clean
+
+ADD conf/php.ini /usr/local/lib/php.ini
+ADD conf/php-fpm.conf /usr/local/etc/php-fpm.conf
+ADD conf/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 CMD [ "/usr/local/sbin/php-fpm", "-F", "-y", "/usr/local/etc/php-fpm.conf", "-c", "/usr/local/lib/php.ini" ]
